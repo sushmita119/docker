@@ -21,19 +21,7 @@ environment
 	}
 
  
-tools
 
- 
-{
-
- 
-	maven 'Maven3'
-
- 
-	jdk 'JDK_NEW'
-
- 
-}
 
  
  
