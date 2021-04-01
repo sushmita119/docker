@@ -154,77 +154,42 @@ stage('Upload to Artifactory')
 		                )
 	        }
 	     }
-
- 
-
- 
-stage('Docker Image'){
-
- 
-steps{
-
- 
-script
-
- 
+	
+stage('Build Image')
 {
-
- 
-dockerImage = docker.build registry
-
- 
-}
-
- 
-}
-
- 
-}
-
- 
-stage('Uploading Image')
-
- 
-{
-
- 
 steps
-
- 
 {
-
- 
-script
-
- 
+bat "docker build -t assignmentdevimage:${BUILD_NUMBER} ."
+}
+}
+stage("Cleaning Previous Deployment")
 {
-
- 
-docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-
- 
- 
-
- 
-/* Push the container to the custom Registry */
-
- 
-dockerImage.push()
-
- 
+steps
+{
+catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE')
+{
+bat "docker stop assignmentdevcontainer"
+bat "docker rm -f assignmentdevcontainer"
 }
+}
+}
+stage ("Docker Deployment")
+{
+steps
+{
+bat "docker run --name assignmentdevcontainer -d -p 9050:8080 assignmentdevimage:${BUILD_NUMBER}"
+}
+}
+stage ('Deploy')
+{
+steps
+{
+deploy adapters: [tomcat7(credentialsId: 'tomcat', path: '', url: 'http://localhost:9995/')], contextPath: 'addition', war: '**/*.war'
+}
+}
+}
+}
+ 
 
  
-}
 
- 
-}
-
- 
-}
-
- 
-}
-
- 
-}
