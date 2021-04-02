@@ -163,7 +163,7 @@ bat "docker build -t sushmitamukherjee/docker:${BUILD_NUMBER} ."
 }
 }
 //stage("Cleaning Previous Deployment")
-{
+//{
 //steps
 //{
 //catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE')
