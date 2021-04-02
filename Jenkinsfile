@@ -42,7 +42,7 @@ steps
 {
 
  
-git url : "https://github.com/sushmita119/our-first-app.git"
+git url : "https://github.com/sushmita119/docker.git"
 
  
 }
@@ -159,7 +159,7 @@ stage('Build Image')
 {
 steps
 {
-bat "docker build -t sushmitamukherjee/our-web-app:${BUILD_NUMBER} ."
+bat "docker build -t sushmitamukherjee/docker:${BUILD_NUMBER} ."
 }
 }
 //stage("Cleaning Previous Deployment")
@@ -187,7 +187,7 @@ stage('Uploading Image')
 
  
 
-                   bat "docker push sushmitamukherjee/our-web-app:${Build_number}"
+                   bat "docker push sushmitamukherjee/docker:${Build_number}"
                }
            }
 stage('Docker Run')
@@ -196,7 +196,7 @@ stage('Docker Run')
                {
                   // bat "docker pull nishant058/helloworld"
                    bat " docker rm --force sushmitacontainer"
-                   bat "docker run -d --name sushmitacontainer -p 9080:8080 sushmitamukherjee/our-web-app:${Build_number}"
+                   bat "docker run -d --name sushmitacontainer -p 9080:8080 sushmitamukherjee/docker:${Build_number}"
 
  
 
