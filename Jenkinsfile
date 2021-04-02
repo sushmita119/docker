@@ -4,21 +4,21 @@ pipeline {
 agent any
 
  
-environment
+//environment
 
- 	{
-
- 
-	dockerImage = ''
+ //	{
 
  
-	registry='sushmitamukherjee/our-web-app'
+//	dockerImage = ''
 
  
-	registryCredential='dockerhub'
+//	registry='sushmitamukherjee/our-web-app'
 
  
-	}
+//	registryCredential='dockerhub'
+
+ 
+//	}
 
  
 
@@ -159,34 +159,56 @@ stage('Build Image')
 {
 steps
 {
-bat "docker build -t assignmentdevimage:${BUILD_NUMBER} ."
+bat "docker build -t sushmitamukherjee/our-web-app:${BUILD_NUMBER} ."
 }
 }
-stage("Cleaning Previous Deployment")
+//stage("Cleaning Previous Deployment")
 {
-steps
-{
-catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE')
-{
-bat "docker stop assignmentdevcontainer"
-bat "docker rm -f assignmentdevcontainer"
-}
-}
-}
-stage ("Docker Deployment")
-{
-steps
-{
-bat "docker run --name assignmentdevcontainer -d -p 9050:8080 assignmentdevimage:${BUILD_NUMBER}"
-}
-}
-stage ('Deploy')
-{
-steps
-{
-deploy adapters: [tomcat7(credentialsId: 'tomcat', path: '', url: 'http://localhost:9995/')], contextPath: 'addition', war: '**/*.war'
-}
-}
+//steps
+//{
+//catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE')
+//{
+//bat "docker stop assignmentdevcontainer"
+//bat "docker rm -f assignmentdevcontainer"
+//}
+//}
+//}
+stage('Uploading Image')
+           {
+               steps
+               {
+                  bat "docker login -u sushmitamukherjee -p Uttam@@00ngr"
+                   
+                   //bat "docker tag nishant058/helloworld nishant"
+
+ 
+
+ 
+
+ 
+
+                   bat "docker push sushmitamukherjee/our-web-app:${Build_number}"
+               }
+           }
+stage('Docker Run')
+           {
+               steps
+               {
+                  // bat "docker pull nishant058/helloworld"
+                   bat " docker rm --force sushmitacontainer"
+                   bat "docker run -d --name sushmitacontainer -p 9080:8080 sushmitamukherjee/our-web-app:${Build_number}"
+
+ 
+
+ 
+
+ 
+
+                   
+               }
+           }
+
+
 }
 }
  
