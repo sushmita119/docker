@@ -1,11 +1,10 @@
-FROM tomcat:alpine
+FROM tomcat
 
  
-LABEL maintainer="sushmitamukherjee"
+ 
 
  
-COPY target/our-web-app.war /usr/local/tomcat/webapps/
+ 
 
-EXPOSE 8080
-
-CMD ["catalina.sh", "run"]
+ 
+ADD target/our-web-app.war /usr/local/tomcat/webapps/.
